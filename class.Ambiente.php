@@ -10,6 +10,7 @@ class Ambiente{
     private $sintomaticos;
     private $infectados;
     private $contadorSintomaticos=0;
+    private $contadorMarcados=0;
     private $contadorMortalidad=0;
     private $mortalidad;
   
@@ -26,6 +27,7 @@ class Ambiente{
         $this->mortalidad = $mortalidad/100;
         $this->primerosInfectados=[];
         $this->infectadosSintomaticos=[];
+        $this->infectadosMuertos=[];
     }
     function generaEnte($state,$id,$ciclo){
         $delx = rand(0,10) -5;
@@ -78,6 +80,9 @@ class Ambiente{
         }
         return $sterilized;
     }
+    function getcontadorMarcados(){
+        return count($this->infectadosMuertos);
+    }
     function sintomaticosCount(){
         return count($this->infectadosSintomaticos);
     }
@@ -93,7 +98,7 @@ class Ambiente{
     function mueve(){
      
         if($this->infectedCount() === $this->cantidad || $this->infectedCount() == $this->inmunizedCount()
-         || ($this->inmunizedCount()) + $this->contadorMortalidad == $this->infectedCount()){
+         || $this->inmunizedCount() + count($this->infectadosMuertos) == $this->infectedCount()){
             return true;
         }
 
@@ -113,12 +118,18 @@ class Ambiente{
                        $this->contadorSintomaticos++;
                 }
                 //Obtener tasa de mortalidad en relación a la cantidad total de infectados sintomáticos
-                if($this->contadorMortalidad<round(count($this->infectadosSintomaticos)*$this->mortalidad) && $ente->sintomas==true && $ente->state==1
+                if($this->contadorMarcados<round(count($this->infectadosSintomaticos)*$this->mortalidad) && $ente->sintomas==true && $ente->state==1
                  && $ente->marked==false){
                     $ente->marked=true;
-                    $this->contadorMortalidad++;  
+                    $this->contadorMarcados++;
+                     
                 }
+                
             $ente->ciclo();
+            if($ente->state==3 && !in_array($ente,$this->infectadosMuertos)){
+                array_push($this->infectadosMuertos,$ente);
+            }
+            
         }
         
     }

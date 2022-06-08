@@ -29,6 +29,7 @@
                 echo '<p>Infectados historicos: '.$amb->infectedCount().'</p>';
                 echo '<p>Inmunizados: '.$amb->inmunizedCount().'</p>';
                 echo '<p>Sintomaticos: '.$amb->sintomaticosCount().'</p>';
+                echo '<p>Muertos: '.$amb->getcontadorMarcados().'</p>';
                 echo "\n</div>";
                 if($amb->mueve()){
                     break;
@@ -53,7 +54,7 @@
                 actual=nuevo;
                 }
                 
-                setTimeout(muestraSiguiente,70);
+                setTimeout(muestraSiguiente,30);
             }
             muestraSiguiente();
             

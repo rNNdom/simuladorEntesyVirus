@@ -41,7 +41,7 @@ class Ente{
             $this->cicloContador=0;
         }
         //Si el contador del ente es igual al ciclo de inmunidad ingresado en la página, este se vuelve inmune.
-        if($this->cicloContador==$this->ciclo){
+        if($this->cicloContador==$this->ciclo && $this->state != 3){
             $this->state=2;
             $this->cicloContador=0;
         }
